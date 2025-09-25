@@ -1,4 +1,4 @@
-package com.example.counselor.entities;
+package com.wellsfargo.counselor.entity;
 
 import javax.persistence.*;
 import java.time.Instant;
