@@ -1,86 +1,108 @@
 package com.wellsfargo.counselor.entity;
 
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import javax.persistence.*;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "advisor")
 public class Advisor {
 
     @Id
-    @GeneratedValue()
-    private long advisorId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "advisor_id")
+    private Long id;
 
     @Column(nullable = false)
-    private String firstName;
+    private String name;
 
-    @Column(nullable = false)
-    private String lastName;
-
-    @Column(nullable = false)
-    private String address;
-
-    @Column(nullable = false)
-    private String phone;
-
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    protected Advisor() {
+    @Column
+    private String phone;
 
-    }
+    @Column(name = "office_hours_start")
+    private String officeHoursStart;
 
-    public Advisor(String firstName, String lastName, String address, String phone, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.phone = phone;
+    @Column(name = "office_hours_end")
+    private String officeHoursEnd;
+
+    @Column(name = "created_at")
+    private Instant createdAt;
+
+    @Column(name = "updated_at")
+    private Instant updatedAt;
+
+    @OneToMany(mappedBy = "advisor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Client> clients = new ArrayList<>();
+
+    public Advisor() { }
+
+    public Advisor(Long id, String name, String email, String phone,
+                   String officeHoursStart, String officeHoursEnd,
+                   Instant createdAt, Instant updatedAt, List<Client> clients) {
+        this.id = id;
+        this.name = name;
         this.email = email;
-    }
-
-    public Long getAdvisorId() {
-        return advisorId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
         this.phone = phone;
+        this.officeHoursStart = officeHoursStart;
+        this.officeHoursEnd = officeHoursEnd;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        if (clients != null) this.clients = clients;
     }
 
+    public Long getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
+    }
+    public String getPhone() {
+        return phone;
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    public String getOfficeHoursStart() {
+        return officeHoursStart;
+    }
+    public void setOfficeHoursStart(String officeHoursStart) {
+        this.officeHoursStart = officeHoursStart;
+    }
+    public String getOfficeHoursEnd() {
+        return officeHoursEnd;
+    }
+    public void setOfficeHoursEnd(String officeHoursEnd) {
+        this.officeHoursEnd = officeHoursEnd;
+    }
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+    public List<Client> getClients() {
+        return clients;
+    }
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
     }
 }
